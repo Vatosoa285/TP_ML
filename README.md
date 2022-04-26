@@ -88,37 +88,37 @@ for i in range (nbTree) :
 
 
     
-![png](renduLab1_files/renduLab1_8_0.png)
+![png](lab_1/renduLab1_files/renduLab1_8_0.png)
     
 
 
 
     
-![png](renduLab1_files/renduLab1_8_1.png)
+![png](lab_1/renduLab1_files/renduLab1_8_1.png)
     
 
 
 
     
-![png](renduLab1_files/renduLab1_8_2.png)
+![png](lab_1/renduLab1_files/renduLab1_8_2.png)
     
 
 
 
     
-![png](renduLab1_files/renduLab1_8_3.png)
+![png](lab_1/renduLab1_files/renduLab1_8_3.png)
     
 
 
 
     
-![png](renduLab1_files/renduLab1_8_4.png)
+![png](lab_1/renduLab1_files/renduLab1_8_4.png)
     
 
 
 
     
-![png](renduLab1_files/renduLab1_8_5.png)
+![png](lab_1/renduLab1_files/renduLab1_8_5.png)
     
 
 
@@ -158,7 +158,7 @@ for i in range (nbTree) :
 
 
     
-![png](renduLab1_files/renduLab1_11_1.png)
+![png](lab_1/renduLab1_files/renduLab1_11_1.png)
     
 
 
@@ -167,7 +167,7 @@ for i in range (nbTree) :
 
 
     
-![png](renduLab1_files/renduLab1_11_3.png)
+![png](lab_1/renduLab1_files/renduLab1_11_3.png)
     
 
 
@@ -197,7 +197,7 @@ plt.show()
 
 
     
-![png](renduLab1_files/renduLab1_13_0.png)
+![png](lab_1/renduLab1_files/renduLab1_13_0.png)
     
 
 
@@ -525,7 +525,7 @@ plt.show()
 
 
     
-![png](perceptron_files/perceptron_24_0.png)
+![png](lab_2/perceptron_files/perceptron_24_0.png)
     
 
 
@@ -589,7 +589,7 @@ plt.show()
 
 
     
-![png](perceptron_files/perceptron_29_0.png)
+![png](lab_2/perceptron_files/perceptron_29_0.png)
     
 
 
@@ -697,7 +697,7 @@ plt.show()
 
 
     
-![png](mlp_files/mlp_5_1.png)
+![png](lab_3/mlp_files/mlp_5_1.png)
     
 
 
@@ -719,7 +719,7 @@ plt.show()
 
 
     
-![png](mlp_files/mlp_6_0.png)
+![png](lab_3/mlp_files/mlp_6_0.png)
     
 
 
@@ -1029,7 +1029,7 @@ plt.show()
 
 
     
-![png](mlp_files/mlp_20_0.png)
+![png](lab_3/mlp_files/mlp_20_0.png)
     
 
 
