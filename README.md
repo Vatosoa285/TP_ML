@@ -1,13 +1,9 @@
-# TP_ML
-************Ce dépôt regroupe les labs de machine learning - 4IR************
+# Supervised Machine Learning Evaluation
+
+* **Vatosoa Razafiniary 4IR SC**
+* **Théo Fontana 4IR SC**
 
 # Lab 1
-
-# Lab 1 Evaluation
-
-### Vatosoa Razafiniary 4IR SC
-### Théo Fontana 4IR SC
-
 
 In the following, we consider the  (binarized) Compas dataset that we studied in the Lab
 
