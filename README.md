@@ -1,12 +1,18 @@
-# Supervised Machine Learning Evaluation
+# Supervised Machine Learning Report 
 
-* **Vatosoa Razafiniary 4IR SC**
-* **Théo Fontana 4IR SC**
+<br/>Students : Théo Fontana - Vatosoa Razafiniary - 4IR SC
+<br/>Github access : https://github.com/Vatosoa285/TP_ML.git
+<br/>This report gathers the work done in the labs of the machine learning course. It has 3 parts that corresponds to the different labs seen :
 
-# Lab 1
+- lab 1: decision trees
+- lab 2: Perceptron
+- lab 3: multi-layer perceptron
+
+The instructions of the labs being quite directive, we took the time to consult the resources provided (about maching learning notions or Python functions) in addition to our courses to carry out and understand the labs. For an easy understanding for the reader, we have put explanatory comments in our codes and displayed the results at runtime.
+
+# Lab 1 : decision trees
 
 In the following, we consider the  (binarized) Compas dataset that we studied in the Lab
-
 
 ```python
 from sklearn import tree
@@ -25,99 +31,65 @@ from sklearn.metrics import confusion_matrix
 
 ```python
 train_examples, train_labels, features, prediction = load_from_csv("./compass.csv") 
-print (train_examples)
-print(train_labels
-)
+print ("We can see here that we work with binarized data :\n",train_examples, "\n-------\n",train_labels)
 ```
-
-    [[1 0 0 ... 0 0 0]
-     [1 0 1 ... 0 0 0]
-     [1 0 0 ... 0 0 0]
-     ...
-     [1 0 0 ... 0 0 0]
-     [1 0 0 ... 0 0 0]
-     [0 1 0 ... 0 0 0]]
-    [1 0 0 ... 1 0 1]
-
+![png](lab_1/renduLab1_files/lab1_1_new.PNG)
 
 A decision tree configuration is a set of parameters that one can use to build decision trees. Propose 6 configurations that are likely to provide different topologies and caracteristics
 
-
 ```python
+#our proposition : affecting different values for the parameters splitter, max_depth and min_samples_leaf 
 treesParmeters = [
-    #expected topologie and caracteristic
+    #expected topology and caracteristic
     {'splitter':'best', 'max_depth': 2, 'min_samples_leaf': 1},
-    #expected topologie and caracteristic
     {'splitter':'random', 'max_depth': 10, 'min_samples_leaf': 100},
-    #expected topologie and caracteristic
     {'splitter':'best', 'max_depth': 5, 'min_samples_leaf': 20},
-    #expected topologie and caracteristic
     {'splitter':'best', 'max_depth': 5, 'min_samples_leaf':5},
-    #expected topologie and caracteristic
-    {'splitter':'best', 'max_depth': 100, 'min_samples_leaf':60},
-    #expected topologie and caracteristic
+    {'splitter':'best', 'max_depth': 100, 'min_samples_leaf':50},
     {'splitter':'best', 'max_depth': 100, 'min_samples_leaf':60},
 ]
 nbTree = len(treesParmeters)
+print("We have configured :", nbTree, "different decision trees here")
 ```
-
+    We have configured : 6 different decision trees here
 Train a decision tree for each of the previous configurations on the full dataset
-
 
 ```python
 for i in range (nbTree) :
     parameters= treesParmeters[i]
-    clf = tree.DecisionTreeClassifier(
+    clf = tree.DecisionTreeClassifier( #while creating each tree, we work with the parameters configured above
         splitter=parameters['splitter'],
         max_depth =parameters['max_depth'],
         min_samples_leaf =parameters['min_samples_leaf']
     )
-    clf = clf.fit(train_examples, train_labels)
-    
+    clf = clf.fit(train_examples, train_labels)   
     plt.figure(figsize=(10,10))
     tree.plot_tree(clf, 
                        feature_names= (features),
                        class_names= ("recidiviste", "non recidiviste"), 
                        filled=True)
     plt.show()
+    # Result : we can visually check that we obtain 6 different trees
+    #Each tree is coherent with the expected topology and characteristic parametered 
 ```
-
-
     
 ![png](lab_1/renduLab1_files/renduLab1_8_0.png)
     
-
-
-
     
 ![png](lab_1/renduLab1_files/renduLab1_8_1.png)
     
-
-
-
     
 ![png](lab_1/renduLab1_files/renduLab1_8_2.png)
     
-
-
-
     
 ![png](lab_1/renduLab1_files/renduLab1_8_3.png)
     
-
-
-
     
 ![png](lab_1/renduLab1_files/renduLab1_8_4.png)
     
-
-
-
     
 ![png](lab_1/renduLab1_files/renduLab1_8_5.png)
     
-
-
 Propose an evaluation in terms of training and testing accuracies using $5$-cross validation on two decision trees that have different typologies
 
 
@@ -143,24 +115,19 @@ for i in range (nbTree) :
     print("%0.2f accuracy with a standard deviation of %0.2f" % (scores.mean(), scores.std()))
     plt.figure(figsize=(10,7))
     tree.plot_tree(clf, 
-                       feature_names= (features),
-                       class_names= ("recidiviste", "non recidiviste"), 
-                       filled=True)
+                   feature_names= (features),
+                   class_names= ("recidiviste", "non recidiviste"), 
+                   filled=True)
     plt.show()
 ```
 
     0.66 accuracy with a standard deviation of 0.02
 
-
-
     
 ![png](lab_1/renduLab1_files/renduLab1_11_1.png)
     
 
-
     0.64 accuracy with a standard deviation of 0.01
-
-
 
     
 ![png](lab_1/renduLab1_files/renduLab1_11_3.png)
@@ -168,7 +135,6 @@ for i in range (nbTree) :
 
 
 Propose an experimental study that shows the transition phase from underfitting to overfitting 
-
 
 ```python
 parameters= treesParmeters[0]
@@ -190,12 +156,9 @@ plt.title('Acuracy acording to test size ')
 plt.plot(test_sizes,acuracy)
 plt.show()
 ```
-
-
     
 ![png](lab_1/renduLab1_files/renduLab1_13_0.png)
     
-
 
 ### Remarks
 * With small tests size, we have bad result because our graph is to close of our data 
@@ -204,7 +167,6 @@ plt.show()
     - **this is underfitting**
 
 Construct the confusion matrix on a particular good configuration (after explaining your choice)
-
 
 ```python
 parameters= treesParmeters[0]
@@ -219,16 +181,13 @@ X_train, X_test, y_train, y_test = train_test_split(train_examples, train_labels
 clf = clf.fit(X_train, y_train)
 #confusion_matrix(y_train, y_test)
 ```
-
 Provide an evaluation of the fairness of the model based on the False Positive Rate
-
 
 ```python
 
 ```
 
-
-# The Perceptron
+# Lab2 : Perceptron
 
 ## Objectives of the practical work
 
@@ -256,10 +215,8 @@ The **inputs** are linked to dimension and hydrodynamics characteristics:
 **Target value/predicted value (Output)** = Residuary resistance per unit weight of
 displacement, adimensional
 
-
 ```python
 # Import some useful libraries and functions
-
 import numpy as np
 import pandas
 import matplotlib.pyplot as plt
@@ -269,7 +226,6 @@ import time
 def print_stats(dataset):
     """Print statistics of a dataset"""
     print(pandas.DataFrame(dataset).describe())
-
 ```
 
 
@@ -307,6 +263,9 @@ Y = dataset[:, -1]  # ground truth
 # Print the first 5 examples
 for i in range(0,5):
     print(f"f({X[i]}) = {Y[i]}")
+#Answer to the questions
+print ("There are", len(dataset), "examples in the dataset, each example has", len(X[0]), "features")
+print ("The ground truth of the 10th example is", f"f({X[9]}) = {Y[9]}")
 ```
 
     f([-5.    0.6   4.78  4.24  3.15  0.35]) = 8.62
@@ -314,23 +273,22 @@ for i in range(0,5):
     f([-2.3    0.565  4.78   5.35   2.76   0.15 ]) = 0.29
     f([-5.     0.6    4.78   4.24   3.15   0.325]) = 6.2
     f([0.    0.53  4.78  3.75  3.15  0.175]) = 0.59
+    There are 308 examples in the dataset, each example has 6 features
+    The ground truth of the 10th example is f([-5.     0.565  4.77   3.99   3.15   0.25 ]) = 1.83
+    
 
 
 The following command adds a column to the inputs.
 
 - what is in the value added this column?
 - why are we doing this?
-
-Addition de la constante pour le perceptron
-
+**Answer: -> the np.insert() function adds a column (the column 0) that has for value an additional dataset that has a specific characteristic.As detailed by the print_stats() function it contains only "1". This is useful to add the perceptron constant w_0.**
 
 ```python
+#to be excuted only once 
 X = np.insert(X, 0, np.ones((len(X))), axis= 1)
-print_stats(X)
-nb_features = len(X[0])
-nb_data = len(X)
+print_stats(X) #after the insert raw 0 was replaced with w_0 and the previous existing raws were just shifted 
 ```
-
                0           1           2           3           4           5  \
     count  308.0  308.000000  308.000000  308.000000  308.000000  308.000000   
     mean     1.0   -2.381818    0.564136    4.788636    3.936818    3.206818   
@@ -356,7 +314,7 @@ nb_data = len(X)
 
 We now want to define a perceptron, that is, a function of the form: 
 
-$h_w(x) = w_0 + w_1 \times x_1 + \dots + w_n \times x_n$
+![png](lab_2/perceptron_files/formula-perceptron_lab2.PNG)
 
 - Complete the code snippet below to:
   - create the vector of weight `w`
@@ -365,23 +323,31 @@ $h_w(x) = w_0 + w_1 \times x_1 + \dots + w_n \times x_n$
 
 
 ```python
-w = np.ones(nb_features)
+nb_features = len(X[0])
+w = np.ones(nb_features) # w is set here as a vector unit, with that value h(w,x) = sum[X]
 
 def h(w, x):
-    return np.dot(x,w)
+    return np.dot(x,w)  
 
-print(f"ground truth = {Y[0]} \nh_w = {h(w,X[0]):.2f} ")
-# print the ground truth and the evaluation of ground truth on the first example
+# print the ground truth and the evaluation of ground truth on the 4 first examples
+for i in range(0,4):
+    print (" For X =",X[i]," expected_h_w is :",Y[i]) 
+    print ("The value calculated by the function h is h_w = ",h(w,X[i]))
+# we can see a tangible loss between the values and that is understandable 
+# the w set here does not necessarily fit the one that will converge the most to the real ground truth expected
 ```
-
-    ground truth = 8.62 
-    h_w = 9.12 
-
+    For X = [ 1.   -5.    0.6   4.78  4.24  3.15  0.35]  expected_h_w is : 8.62
+    The value calculated by the function h is h_w =  9.120000000000001
+     For X = [ 1.    -5.     0.565  4.77   3.99   3.15   0.15 ]  expected_h_w is : 0.18
+    The value calculated by the function h is h_w =  8.625
+     For X = [ 1.    -2.3    0.565  4.78   5.35   2.76   0.15 ]  expected_h_w is : 0.29
+    The value calculated by the function h is h_w =  12.305
+     For X = [ 1.    -5.     0.6    4.78   4.24   3.15   0.325]  expected_h_w is : 6.2
+    The value calculated by the function h is h_w =  9.095
 
 ## Loss function
 
 Complete the definiton of the loss function below such that, for a **single** example `x` with ground truth `y`, it returns the $L_2$ loss of $h_w$ on `x`.
-
 
 ```python
 def loss(w, x, y):
@@ -389,7 +355,6 @@ def loss(w, x, y):
     
 print(f"The L_2 loss of the first example is {loss(w,X[0],Y[0]):.2f}")
 ```
-
     The L_2 loss of the first example is 0.25
 
 
@@ -407,7 +372,6 @@ def emp_loss(w, X, Y):
 
 print(f"The empirical loss of the set of examples is  {emp_loss(w,X,Y):.2f}")
 ```
-
     The empirical loss of the set of examples is  229.63
 
 
@@ -493,7 +457,6 @@ for iter in Iters:
     executionTime.append(et)
 ```
 
-
 ```python
 fig, axs = plt.subplots(1, 2, constrained_layout=True)
 
@@ -518,35 +481,22 @@ ax2.tick_params(axis='y', labelcolor='tab:red')
 
 plt.show()
 ```
-
-
     
 ![png](lab_2/perceptron_files/perceptron_24_0.png)
     
-
-
+ANALYSIS on the training parameters 'alpha' and 'max_iter'
 * `alpha`
-
-    We remark that using a step too small during the decent isn't performant, however if we use a step too big we can't create the model due to overflow.
-
-    We found that using a step of `alpha = 10e-5` create the bests results.
+    We noticed that using a step too small during the decent isn't performant, however if we use a step too big we can't create the model due to overflow.We found that using a step of `alpha = 10e-5` create the bests results.
 
 * `max_iter`
-
-    Increse the number of iterations allow to reduce the empirical loss, however after 8000 iteration our model seams to have converged.
-
-    After that the decent take more time and don't improve the perfomance much.
-
-    That why we will use `max_iter = 8000` for our final model
+    Increasing the number of iterations allow to reduce the empirical loss, however after 8000 iteration our model seams to have converged. After that the decent takes more time and doesn't improve the perfomance much. That is why we will use max_iter = 8000 for our final model
 
 ### Our final model
-
 
 ```python
 w_init = np.ones((len(X[0])))
 w_final = descent(w_init, X, Y, alpha = 10e-5, max_iter=8000)
 ```
-
 
 ```python
 print(f"The empirical loss of our first model was {emp_loss(w_init, X, Y):.2f}")
@@ -555,9 +505,7 @@ print(f"The empirical loss of our final model is {emp_loss(w_final, X, Y):.2f}")
 
     The empirical loss of our first model was 229.63
     The empirical loss of our final model is 80.08
-
-
-
+    
 ```python
 num_samples_to_plot = 30
 
@@ -581,49 +529,37 @@ axs.flat[1].set_xlabel("Examples")
 axs.flat[1].set_ylim([-10, 60])
 axs.flat[1].set_ylabel("f(examples)")
 plt.show()
+
+# We can see below that after training, we are closer to the expected behavior (without coinciding exactly to it). 
+# Is that final model the optimal one for a perceptron?
+#-> It is a model generated with the optimal parameters found from the gradient descent 
 ```
-
-
     
-![png](lab_2/perceptron_files/perceptron_29_0.png)
-    
-
-
-
-
-
+![png](lab_2/perceptron_files/perceptron_29_0.png)   
 
 ## Going further
-
 The following are extensions of the work previously done. If attempting them **do not modify** the code you produced above so that it can be evaluated.
 
 ### Improvements to gradient descent
-
 Consider improving the gradient descent with:
 
  - Stochastic Gradient Descent (SGD), which means selecting a subset of the examples for training
  - Detection of convergence to halt the algorithm before the maximum number of iterations
 
-
 ### Data normalization
-
 Different input features can have different units, and very different ranges.
 Within the perceptron computation, these values will be summed together.
 While gradient descent is normally able to deal with this (by adapting the weights of the perceptron for each input feature), standardizing the input features usually eases the perceptron training, and can sometimes improve accuracy.
-
-
-
 
 ```python
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler(copy=True) 
 X_normalized = sc.fit_transform(X)
 ```
-
 Try applying a standard normalization to the input features (make sure that you keep a feature column that is always equal to 1). Is the convergence faster ? Try to quantify this speed-up. What about accuracy ?
 
 
-# Multi-Layer Perceptron
+# Lab 3 : Multi-Layer Perceptron
 ## Introduction
 
 The objective of this lab is to dive into particular kind of neural network: the *Multi-Layer Perceptron* (MLP).
@@ -664,11 +600,7 @@ mlp.fit(x_train, y_train) # train the MLP
 ```
 
 
-
-
     MLPRegressor(max_iter=3000, random_state=1)
-
-
 
 
 ```python
@@ -689,15 +621,9 @@ plt.show()
 
     Train score:  0.9940765369322633
     Test score:   0.9899773031580283
-
-
-
     
 ![png](lab_3/mlp_files/mlp_5_1.png)
     
-
-
-
 ```python
 # Plot the results
 num_samples_to_plot = 20
@@ -712,37 +638,25 @@ fig = plt.gcf()
 fig.set_size_inches(5, 4)
 plt.show()
 ```
-
-
     
 ![png](lab_3/mlp_files/mlp_6_0.png)
-    
-
+   
 
 ### Analyzing the network
 
 Many details of the network are currently hidden as default parameters.
 
 Using the [documentation of the MLPRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html), answer the following questions.
-
 - What is the structure of the network?
+     <br/>3 layers, the hidden layer has 100 percetrons
 - What it is the algorithm used for training? Is there algorithm available that we mentioned during the courses?
+     <br/>The default value ‘adam’ refers to a stochastic gradient-based optimizer proposed by Kingma, Diederik, and Jimmy Ba
 - How does the training algorithm decides to stop the training?
-
-*What is the structure of the network?*
-* 3 layers, the hidden layer has 100 percetrons
-
-
-*What it is the algorithm used for training? Is there algorithm available that we mentioned during the courses?*
-* The default value ‘adam’ refers to a stochastic gradient-based optimizer proposed by Kingma, Diederik, and Jimmy Ba
-
-*How does the training algorithm decides to stop the training?*
-* It stops the training after `max_iter` itterations are done, there is no early stopping by default.
+     <br/>It stops the training after max_iter itterations are done, there is no early stopping by default.
 
 ## Onto a more challenging dataset: house prices
 
 For the rest of this lab, we will use the (more challenging) [California Housing Prices dataset](https://www.kaggle.com/datasets/camnugent/california-housing-prices).
-
 
 ```python
 # clean all previously defined variables for the sailing boats
@@ -762,7 +676,6 @@ import copy
 
 ```
 
-
 ```python
 num_samples = 3000 # only use the first N samples to limit training time
 
@@ -774,22 +687,8 @@ X.head(10) # print the first 10 values
 ```
 
 
-
-
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1114,19 +1013,6 @@ table
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1317,22 +1203,8 @@ df
 ```
 
 
-
-
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1512,23 +1384,8 @@ results = pd.DataFrame.from_dict([best_params])
 results
 ```
 
-
-
-
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
