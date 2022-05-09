@@ -108,26 +108,26 @@ for i in range (nbTree) :
         max_depth =parameters['max_depth'],
         min_samples_leaf =parameters['min_samples_leaf']
     )
-    X_train, X_test, y_train, y_test = train_test_split(train_examples, train_labels, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(train_examples, train_labels, test_size=0.2, random_state=1)
 
     clf = clf.fit(X_train, y_train)
-    scores = cross_val_score(clf, X_test, y_test, cv=2)
-    print("%0.2f accuracy with a standard deviation of %0.2f" % (scores.mean(), scores.std()))
+    scores = cross_val_score(clf, X_test, y_test, cv=5)
+    print("The tree number %0.2i has %0.2f accuracy with a standard deviation of %0.2f" % (i,scores.mean(), scores.std()))
     plt.figure(figsize=(10,7))
     tree.plot_tree(clf, 
-                   feature_names= (features),
-                   class_names= ("recidiviste", "non recidiviste"), 
-                   filled=True)
+                       feature_names= (features),
+                       class_names= ("recidiviste", "non recidiviste"), 
+                       filled=True)
     plt.show()
 ```
 
-    0.66 accuracy with a standard deviation of 0.02
+    The tree number 00 has 0.65 accuracy with a standard deviation of 0.03
 
     
 ![png](lab_1/renduLab1_files/renduLab1_11_1.png)
     
 
-    0.64 accuracy with a standard deviation of 0.01
+    The tree number 01 has 0.65 accuracy with a standard deviation of 0.02
 
     
 ![png](lab_1/renduLab1_files/renduLab1_11_3.png)
@@ -138,7 +138,7 @@ Propose an experimental study that shows the transition phase from underfitting 
 
 ```python
 parameters= treesParmeters[0]
-acuracy =[]
+accuracy =[]
 test_sizes=np.linspace(0.01,0.8,30)
 for test_size in test_sizes :
     clf = tree.DecisionTreeClassifier(
@@ -150,17 +150,18 @@ for test_size in test_sizes :
 
     clf = clf.fit(X_train, y_train)
     scores = cross_val_score(clf, X_test, y_test, cv=2)
-    acuracy.append(scores.mean())
+    accuracy.append(scores.mean())
     #print(f"for a test size of {1/i} we have an accuracy of {scores.mean()} with a standard deviation of {scores.std()}")
-plt.title('Acuracy acording to test size ')
-plt.plot(test_sizes,acuracy)
+plt.title('Accuracy according to test size ')
+plt.plot(test_sizes,accuracy)
 plt.show()
 ```
     
-![png](lab_1/renduLab1_files/renduLab1_13_0.png)
+![png](lab_1/renduLab1_files/renduLab1_13_0.png) 
     
 
 ### Remarks
+* We reach a maximal accuracy around 0.67 for a 0.15 <test_size_ref< 0.19 (slitghly inferior to 0.2)
 * With small tests size, we have bad result because our graph is to close of our data 
     - **this is overfitting**
 * With high tests size, our results start to be be lower because the graph is constructed with too few data
@@ -169,23 +170,46 @@ plt.show()
 Construct the confusion matrix on a particular good configuration (after explaining your choice)
 
 ```python
-parameters= treesParmeters[0]
+test_size = 0.16 #according to the previous analysis we will set this value to test_size 
+
+X_train, X_test, y_train, y_test = train_test_split(train_examples, train_labels, test_size=test_size, random_state=1)
+parameters= treesParmeters[1] #according to resutls in [entry 9], we will keep tree 1 for this  experiment (having the best standard deviation)
 
 clf = tree.DecisionTreeClassifier(
         splitter=parameters['splitter'],
         max_depth =parameters['max_depth'],
         min_samples_leaf =parameters['min_samples_leaf']
     )
-X_train, X_test, y_train, y_test = train_test_split(train_examples, train_labels, test_size=test_size, random_state=42)
-
 clf = clf.fit(X_train, y_train)
-#confusion_matrix(y_train, y_test)
+y_predict = clf.predict(X_test)
+print("Accuracy of the model : ",accuracy_score(y_test,y_predict))
+
+#confusion_matrix
+print("Confusion matrix")
+conf_mx = confusion_matrix(y_test,y_predict, labels=clf.classes_)
+disp = ConfusionMatrixDisplay(confusion_matrix=conf_mx,display_labels=clf.classes_)
+
+disp.plot()
+plt.show()
 ```
+    Accuracy of the model :  0.6718009478672986
+    Confusion matrix
+    
+ ![png](lab_1/renduLab1_files/conf_matrix_lab1.PNG)
+       
 Provide an evaluation of the fairness of the model based on the False Positive Rate
 
 ```python
-
+print("% of prisoners correctly predicted recidivist ou not by our model :", (conf_mx[0,0]+conf_mx[1,1])/len(y_test)*100, "%")
+print(" % of recidivist prisoners correctly predicted recidivist our model :",conf_mx[0,0]/(conf_mx[0,0]+conf_mx[1,0])*100,"%")
+print("% of non-recidivist prisoners correctly predicted non-recidivist our model :",conf_mx[1,1]/(conf_mx[0,1]+conf_mx[1,1])*100,"%")
 ```
+    % of prisoners correctly predicted recidivist ou not by our model : 67.18009478672985 %
+     % of recidivist prisoners correctly predicted recidivist our model : 65.33333333333333 %
+    % of non-recidivist prisoners correctly predicted non-recidivist our model : 70.21943573667711 %
+    
+We can see that our model has an accuracy of 67.10% which is pretty average. Based on the two last percentages (true recidivists and true non-recidivists) our model is not fair because it predicts with lower accuracy the recidivists (65.33%) compared to the non-ones(70.21%)
+--> A possibility is to reaching a more fair model is to increase gradually the value of test_size beetween 0.16 to 0.25 for example according to the figure in [entry 29].
 
 # Lab2 : Perceptron
 
