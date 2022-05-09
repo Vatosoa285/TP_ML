@@ -1,6 +1,6 @@
 # Supervised Machine Learning Report 
 
-<br/>Students : Théo Fontana - Vatosoa Razafiniary - 4IR SC
+<br/>Students : Théo Fontana - Vatosoa Razafiniary - Dimitrios Nixarlidis - 4IR SC
 <br/>Github access : https://github.com/Vatosoa285/TP_ML.git
 <br/>This report gathers the work done in the labs of the machine learning course. It has 3 parts that corresponds to the different labs seen :
 
@@ -209,7 +209,7 @@ print("% of non-recidivist prisoners correctly predicted non-recidivist our mode
     % of non-recidivist prisoners correctly predicted non-recidivist our model : 70.21943573667711 %
     
 We can see that our model has an accuracy of 67.10% which is pretty average. Based on the two last percentages (true recidivists and true non-recidivists) our model is not fair because it predicts with lower accuracy the recidivists (65.33%) compared to the non-ones(70.21%)
---> A possibility is to reaching a more fair model is to increase gradually the value of test_size beetween 0.16 to 0.25 for example according to the figure in [entry 29].
+--> A possibility is to reaching a more fair model is to increase gradually the value of test_size beetween 0.16 to 0.25 for example according to the accuracy according to test size figure.
 
 # Lab2 : Perceptron
 
